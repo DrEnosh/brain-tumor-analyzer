@@ -1,0 +1,110 @@
+{
+  "glioma": {
+    "label": "glioma",
+    "display_name": "Glioma",
+    "confidence": 0.8994,
+    "probabilities": {
+      "glioma": 0.8994,
+      "meningioma": 0.0354,
+      "notumor": 0.036,
+      "pituitary": 0.0291
+    },
+    "attention": {
+      "area": "lower part",
+      "centroid": {
+        "x": 0.556,
+        "y": 0.61
+      },
+      "coverage": 0.097,
+      "text": "The model's strongest attention is in the lower part of the image (about 10% of the image area)."
+    },
+    "inference_ms": 33.7,
+    "orig_img": "assets/samples/glioma_orig.png",
+    "overlay_img": "assets/samples/glioma_overlay.png",
+    "heatmap_img": "assets/samples/glioma_heatmap.png",
+    "origin": "Glial cells inside the brain tissue",
+    "description": "Gliomas grow from glial cells, the cells that support and protect neurons, inside the brain tissue itself. In adults they most often occur in the cerebral hemispheres and can spread into the surrounding brain tissue.",
+    "filename": "Te-glTr_0000.jpg"
+  },
+  "meningioma": {
+    "label": "meningioma",
+    "display_name": "Meningioma",
+    "confidence": 0.9172,
+    "probabilities": {
+      "glioma": 0.0235,
+      "meningioma": 0.9172,
+      "notumor": 0.0418,
+      "pituitary": 0.0174
+    },
+    "attention": {
+      "area": "right side",
+      "centroid": {
+        "x": 0.612,
+        "y": 0.487
+      },
+      "coverage": 0.073,
+      "text": "The model's strongest attention is in the right side of the image (about 7% of the image area)."
+    },
+    "inference_ms": 15.0,
+    "orig_img": "assets/samples/meningioma_orig.png",
+    "overlay_img": "assets/samples/meningioma_overlay.png",
+    "heatmap_img": "assets/samples/meningioma_heatmap.png",
+    "origin": "Meninges (membranes covering the brain)",
+    "description": "Meningiomas grow from the meninges, the protective membranes that wrap the brain and spinal cord. They usually sit on the surface of the brain, just under the skull, and press inward on the brain rather than growing inside it. Most are slow-growing and benign.",
+    "filename": "Te-meTr_0000.jpg"
+  },
+  "notumor": {
+    "label": "notumor",
+    "display_name": "No tumor",
+    "confidence": 0.9218,
+    "probabilities": {
+      "glioma": 0.0216,
+      "meningioma": 0.0326,
+      "notumor": 0.9218,
+      "pituitary": 0.024
+    },
+    "attention": {
+      "area": "upper-left part",
+      "centroid": {
+        "x": 0.322,
+        "y": 0.352
+      },
+      "coverage": 0.152,
+      "text": "The model's strongest attention is in the upper-left part of the image (about 15% of the image area)."
+    },
+    "inference_ms": 13.5,
+    "orig_img": "assets/samples/notumor_orig.png",
+    "overlay_img": "assets/samples/notumor_overlay.png",
+    "heatmap_img": "assets/samples/notumor_heatmap.png",
+    "origin": "No tumour pattern detected",
+    "description": "The model did not find the patterns of a glioma, meningioma or pituitary tumour in this slice. It only recognises these three tumour types, so other conditions are not ruled out.",
+    "filename": "Te-noTr_0000.jpg"
+  },
+  "pituitary": {
+    "label": "pituitary",
+    "display_name": "Pituitary tumor",
+    "confidence": 0.949,
+    "probabilities": {
+      "glioma": 0.0171,
+      "meningioma": 0.0135,
+      "notumor": 0.0205,
+      "pituitary": 0.949
+    },
+    "attention": {
+      "area": "lower part",
+      "centroid": {
+        "x": 0.515,
+        "y": 0.63
+      },
+      "coverage": 0.095,
+      "text": "The model's strongest attention is in the lower part of the image (about 10% of the image area)."
+    },
+    "inference_ms": 17.9,
+    "orig_img": "assets/samples/pituitary_orig.png",
+    "overlay_img": "assets/samples/pituitary_overlay.png",
+    "heatmap_img": "assets/samples/pituitary_heatmap.png",
+    "origin": "Pituitary gland at the base of the brain",
+    "description": "Pituitary tumours (usually adenomas) grow in the pituitary gland, a pea-sized hormone gland at the base of the brain. It sits in a bony pocket called the sella turcica, just below where the optic nerves cross. Most are benign but can affect hormone levels or vision.",
+    "filename": "Te-piTr_0000.jpg"
+  }
+}

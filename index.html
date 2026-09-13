@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuroScan AI - Brain MRI Tumor Diagnostic & Explainability Portal</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+  <header class="top-nav">
+    <div class="nav-brand">
+      <i class="fa-solid fa-brain nav-icon"></i>
+      <div class="brand-text">
+        <span class="brand-title">NeuroScan AI</span>
+        <span class="brand-subtitle">Clinical Brain Tumor Detection & Grad-CAM Explainability</span>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-status">
+        <span class="status-indicator online"></span>
+        <span id="system-status-text">AI Diagnostic Engine Ready</span>
+      </div>
+      <a href="https://github.com/DrEnosh/brain-tumor-analyzer" target="_blank" class="nav-github-link">
+        <i class="fa-brands fa-github"></i> GitHub Repository
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Tabs -->
+  <nav class="tabs-bar">
+    <button class="tab-btn active" data-tab="studio-tab">
+      <i class="fa-solid fa-microscope"></i> Diagnostic Studio
+    </button>
+    <button class="tab-btn" data-tab="patients-tab">
+      <i class="fa-solid fa-hospital-user"></i> Patient Records & History
+    </button>
+    <button class="tab-btn" data-tab="benchmarks-tab">
+      <i class="fa-solid fa-chart-line"></i> Model Benchmarks & Validation
+    </button>
+    <button class="tab-btn" data-tab="arch-tab">
+      <i class="fa-solid fa-layer-group"></i> Architecture & Research
+    </button>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="main-layout">
+
+    <!-- Tab 1: Diagnostic Studio -->
+    <section id="studio-tab" class="tab-content active">
+      <div class="studio-grid">
+        
+        <!-- Left Panel: Patient Intake & Upload -->
+        <div class="card panel-input">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-user-pen"></i> 1. Patient Selection & Intake</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="select-patient">Assigned Patient Record:</label>
+              <div class="input-with-action">
+                <select id="select-patient">
+                  <option value="">-- Quick Select Patient --</option>
+                </select>
+                <button id="btn-quick-add-patient" class="btn-secondary" title="Register New Patient">
+                  <i class="fa-solid fa-plus"></i> New
+                </button>
+              </div>
+            </div>
+
+            <!-- Quick Add Form (Collapsible) -->
+            <div id="quick-patient-form" class="hidden-form">
+              <div class="form-row">
+                <input type="text" id="new-p-name" placeholder="Full Name (e.g. Eleanor Vance)">
+                <input type="number" id="new-p-age" placeholder="Age" style="width: 80px;" min="1" max="120" value="48">
+                <select id="new-p-gender" style="width: 110px;">
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <input type="text" id="new-p-notes" placeholder="Clinical symptoms or MRI scan notes...">
+                <button id="btn-save-patient" class="btn-primary-sm">Save</button>
+              </div>
+            </div>
+
+            <hr class="divider">
+
+            <h3><i class="fa-solid fa-upload"></i> 2. Submit MRI Scan</h3>
+            
+            <!-- Quick Demo Sample Scans -->
+            <div class="sample-scans-box">
+              <span class="sample-label"><i class="fa-solid fa-flask"></i> Select Demo Clinical Case (Instant):</span>
+              <div class="sample-buttons">
+                <button class="sample-btn" data-type="glioma">Glioma</button>
+                <button class="sample-btn" data-type="meningioma">Meningioma</button>
+                <button class="sample-btn" data-type="pituitary">Pituitary</button>
+                <button class="sample-btn" data-type="notumor">Healthy</button>
+              </div>
+            </div>
+
+            <!-- Dropzone -->
+            <div class="dropzone" id="mri-dropzone">
+              <input type="file" id="mri-file-input" accept="image/*" style="display: none;">
+              <i class="fa-solid fa-cloud-arrow-up dropzone-icon"></i>
+              <p class="dropzone-primary-text">Drag & drop MRI slice here</p>
+              <p class="dropzone-sub-text">or <span>browse local file</span> (JPEG, PNG T1/T2 axial slices)</p>
+            </div>
+
+            <!-- Selected Image Preview -->
+            <div id="preview-container" class="preview-box hidden">
+              <div class="preview-header">
+                <span id="preview-filename">scan.jpg</span>
+                <button id="btn-clear-preview" class="btn-icon" title="Clear image"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+              <div class="preview-img-wrapper">
+                <img id="preview-img" src="" alt="Selected MRI scan">
+              </div>
+            </div>
+
+            <!-- Action Button -->
+            <button id="btn-analyze" class="btn-primary btn-large" disabled>
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Run AI Diagnostic Analysis
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Panel: Visual Explainability & Clinical Findings -->
+        <div class="card panel-output">
+          <div class="card-header flex-between">
+            <h3><i class="fa-solid fa-chart-pie"></i> Diagnostic Findings & Explainability</h3>
+            <span id="scan-id-tag" class="badge badge-muted">Awaiting Scan</span>
+          </div>
+
+          <div class="card-body" id="results-empty-state">
+            <div class="empty-placeholder">
+              <i class="fa-solid fa-brain placeholder-icon"></i>
+              <h4>Ready for Diagnostic Analysis</h4>
+              <p>Select a clinical demo MRI slice above or upload a patient scan to evaluate multi-class tumor probability and generate Grad-CAM saliency localization.</p>
+            </div>
+          </div>
+
+          <div class="card-body hidden" id="results-content">
+            <!-- Top Classification Banner -->
+            <div class="diagnosis-banner" id="diagnosis-banner">
+              <div class="diagnosis-main">
+                <div class="diagnosis-title" id="res-tumor-type">GLIOMA TUMOR DETECTED</div>
+                <div class="diagnosis-subtitle" id="res-model-info">Backbone: EfficientNet-B0 (Transfer Learning) &bull; Grad-CAM Saliency</div>
+              </div>
+              <div class="confidence-circle">
+                <span class="confidence-val" id="res-confidence-val">98.5%</span>
+                <span class="confidence-lbl">Confidence</span>
+              </div>
+            </div>
+
+            <!-- Probability Breakdown Bars -->
+            <div class="probs-section">
+              <h4>Class Probability Distribution</h4>
+              <div class="prob-bars">
+                <div class="prob-item">
+                  <div class="prob-info"><span>Glioma:</span><span id="prob-val-glioma">0.0%</span></div>
+                  <div class="progress-bar"><div class="progress-fill" id="bar-glioma" style="width: 0%;"></div></div>
+                </div>
+                <div class="prob-item">
+                  <div class="prob-info"><span>Meningioma:</span><span id="prob-val-meningioma">0.0%</span></div>
+                  <div class="progress-bar"><div class="progress-fill" id="bar-meningioma" style="width: 0%;"></div></div>
+                </div>
+                <div class="prob-item">
+                  <div class="prob-info"><span>Pituitary Tumor:</span><span id="prob-val-pituitary">0.0%</span></div>
+                  <div class="progress-bar"><div class="progress-fill" id="bar-pituitary" style="width: 0%;"></div></div>
+                </div>
+                <div class="prob-item">
+                  <div class="prob-info"><span>No Tumor (Healthy):</span><span id="prob-val-notumor">0.0%</span></div>
+                  <div class="progress-bar"><div class="progress-fill" id="bar-notumor" style="width: 0%;"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Visual Explainability Viewer (Grad-CAM) -->
+            <div class="explainability-section">
+              <div class="flex-between">
+                <h4><i class="fa-solid fa-eye"></i> Grad-CAM Visual Localization</h4>
+                <div class="opacity-control">
+                  <label for="blend-slider"><i class="fa-solid fa-sliders"></i> Heatmap Blend:</label>
+                  <input type="range" id="blend-slider" min="0" max="100" value="55">
+                  <span id="blend-value">55%</span>
+                </div>
+              </div>
+
+              <!-- Side-by-Side Images -->
+              <div class="scan-comparison-grid">
+                <div class="scan-frame">
+                  <span class="scan-frame-title">Native MRI</span>
+                  <img id="res-img-orig" src="" alt="Native MRI">
+                </div>
+                <div class="scan-frame">
+                  <span class="scan-frame-title">Grad-CAM Heatmap</span>
+                  <img id="res-img-heat" src="" alt="Grad-CAM Saliency">
+                </div>
+                <div class="scan-frame active-frame">
+                  <span class="scan-frame-title">Saliency Overlay</span>
+                  <div class="interactive-blend-container">
+                    <img id="blend-base-img" src="" alt="Blend Base">
+                    <img id="blend-heat-img" src="" alt="Blend Heatmap" style="opacity: 0.55;">
+                  </div>
+                </div>
+              </div>
+              <p class="explainability-note" id="attention-text">
+                <i class="fa-solid fa-circle-info"></i> Warm focal regions (red/yellow) indicate the specific morphological brain features that drove the deep neural network's diagnostic decision.
+              </p>
+            </div>
+
+            <!-- Clinical Description Box -->
+            <div class="clinical-info-box" id="clinical-info-box">
+              <h4><i class="fa-solid fa-notes-medical"></i> Clinical & Anatomical Context</h4>
+              <p><strong>Cellular Origin:</strong> <span id="res-origin" class="origin-tag">Glial cells</span></p>
+              <p id="res-description" style="margin-top: 4px;">Gliomas grow from glial cells, the cells that support and protect neurons, inside the brain tissue itself.</p>
+            </div>
+
+            <!-- PDF / Report Action Bar -->
+            <div class="report-export-bar">
+              <span class="disclaimer-badge">
+                <i class="fa-solid fa-triangle-exclamation"></i> <strong>Medical Notice:</strong> Research prototype for educational evaluation. Not certified as a primary diagnostic device.
+              </span>
+              <div style="display: flex; gap: 8px;">
+                <button id="btn-save-record" class="btn-secondary">
+                  <i class="fa-solid fa-floppy-disk"></i> Save Record
+                </button>
+                <button id="btn-download-pdf" class="btn-accent">
+                  <i class="fa-solid fa-file-pdf"></i> Download / Print Clinical Report
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Tab 2: Patient Registry & Scan History -->
+    <section id="patients-tab" class="tab-content">
+      <div class="card full-width">
+        <div class="card-header flex-between">
+          <h3><i class="fa-solid fa-clock-rotate-left"></i> Patient Intake Registry & Diagnostic History</h3>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="filter-history-input" placeholder="Search patient name or ID..." style="width: 220px;">
+            <button id="btn-export-records" class="btn-secondary"><i class="fa-solid fa-file-export"></i> Export JSON</button>
+            <button id="btn-refresh-history" class="btn-secondary"><i class="fa-solid fa-arrows-rotate"></i> Reset</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="data-table" id="history-table">
+            <thead>
+              <tr>
+                <th>Scan ID</th>
+                <th>Patient ID / Name</th>
+                <th>Age / Gender</th>
+                <th>Predicted Diagnosis</th>
+                <th>Confidence</th>
+                <th>Exam Date</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body">
+              <tr><td colspan="7" class="text-center">Loading diagnostic history...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Model Benchmarks & Evaluation -->
+    <section id="benchmarks-tab" class="tab-content">
+      <div class="benchmarks-grid">
+        <!-- Summary Cards -->
+        <div class="metrics-cards-row">
+          <div class="metric-card">
+            <span class="metric-label">Transfer Learning Accuracy</span>
+            <span class="metric-val text-blue" id="bench-eff-acc">98.3%</span>
+            <span class="metric-sub">EfficientNet-B0 (95% CI: 97.3?99.2%)</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Baseline CNN Accuracy</span>
+            <span class="metric-val text-muted" id="bench-base-acc">97.8%</span>
+            <span class="metric-sub">Custom CNN (Trained from scratch)</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Macro ROC-AUC</span>
+            <span class="metric-val text-green" id="bench-eff-auc">0.9980</span>
+            <span class="metric-sub">One-vs-Rest Multi-Class</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">CPU Server Latency</span>
+            <span class="metric-val text-purple" id="bench-latency">96 ms</span>
+            <span class="metric-sub">Batch Size = 1 (ONNX Runtime)</span>
+          </div>
+        </div>
+
+        <!-- Evaluation Charts & Comparison -->
+        <div class="comparison-visuals-grid">
+          <div class="card">
+            <div class="card-header"><h3><i class="fa-solid fa-table-cells"></i> Test Confusion Matrix (Held-out 1,009 scans)</h3></div>
+            <div class="card-body text-center">
+              <img id="img-confusion-matrix" src="assets/figures/confusion_matrices.png" alt="Confusion Matrix" class="responsive-plot">
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3><i class="fa-solid fa-chart-line"></i> Multi-Class ROC Curves</h3></div>
+            <div class="card-body text-center">
+              <img id="img-roc-curves" src="assets/figures/roc_curves.png" alt="ROC Curves" class="responsive-plot">
+            </div>
+          </div>
+        </div>
+
+        <div class="comparison-visuals-grid">
+          <div class="card">
+            <div class="card-header"><h3><i class="fa-solid fa-arrow-trend-up"></i> Training & Validation Curves</h3></div>
+            <div class="card-body text-center">
+              <img src="assets/figures/training_curves.png" alt="Training Curves" class="responsive-plot">
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3><i class="fa-solid fa-check-double"></i> Grad-CAM Verification on Test Cases</h3></div>
+            <div class="card-body text-center">
+              <img src="assets/figures/gradcam_correct.png" alt="Grad-CAM Correct" class="responsive-plot">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Tab 4: System Architecture & Research -->
+    <section id="arch-tab" class="tab-content">
+      <div class="arch-grid">
+        <div class="arch-card">
+          <h3><i class="fa-solid fa-database"></i> Dataset & Leakage-Safe Splitting</h3>
+          <p>
+            The Kaggle Brain Tumor MRI Dataset contains 7,023 images. Direct inspection revealed 297 byte-identical duplicates and 327 duplicate clusters that crossed the original Train/Test split folders.
+          </p>
+          <ul>
+            <li><strong>Deduplication:</strong> Exact duplicate removal + perceptual hash clustering.</li>
+            <li><strong>Stratified Split:</strong> 70% Train, 15% Validation, 15% Test grouped by patient/cluster seed.</li>
+            <li><strong>Normalization:</strong> Grayscale conversion with aspect-ratio preserved padding to 224 &times; 224 pixels.</li>
+          </ul>
+        </div>
+
+        <div class="arch-card">
+          <h3><i class="fa-solid fa-microchip"></i> Model Architecture & ONNX Optimization</h3>
+          <p>
+            We evaluated three architectures: a 4-block custom CNN, EfficientNet-B0 (ImageNet transfer), and ResNet-50. EfficientNet-B0 was selected for deployment due to superior parameter efficiency (4.0M params).
+          </p>
+          <ul>
+            <li><strong>Embedded Grad-CAM:</strong> Class activation maps computed inside the computational graph without autograd dependencies.</li>
+            <li><strong>Out-of-Distribution (OOD):</strong> Mahalanobis distance scoring flags non-MRI images or artifacts.</li>
+            <li><strong>ONNX Runtime:</strong> 96 ms CPU execution latency on standard server hardware.</li>
+          </ul>
+        </div>
+
+        <div class="arch-card">
+          <h3><i class="fa-solid fa-shield-halved"></i> Explainability & Clinical Safety</h3>
+          <p>
+            Automated deep learning systems in radiology require interpretable saliency maps so clinicians can cross-verify whether the model recognized anatomical pathology rather than imaging artifacts.
+          </p>
+          <ul>
+            <li><strong>Grad-CAM Saliency:</strong> Identifies focal regions influencing class logits.</li>
+            <li><strong>Attention Description:</strong> Quantifies coverage percentage and anatomical centroid.</li>
+            <li><strong>Clinical Safeguard:</strong> Flags low-confidence predictions (< 60%) and out-of-distribution scans.</li>
+          </ul>
+        </div>
+
+        <div class="arch-card">
+          <h3><i class="fa-solid fa-code-branch"></i> Open Source Repository</h3>
+          <p>
+            Complete source code, training scripts, FastAPI backend, Dockerfile, evaluation reports, and ONNX models are version-controlled on GitHub.
+          </p>
+          <div style="margin-top: 14px;">
+            <a href="https://github.com/DrEnosh/brain-tumor-analyzer" target="_blank" class="btn-primary">
+              <i class="fa-brands fa-github"></i> View GitHub Repository
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Report Modal for Print / PDF Export -->
+  <div id="report-modal-backdrop" class="modal-backdrop hidden">
+    <div class="report-modal">
+      <div class="report-print-content">
+        <div class="report-header-row">
+          <div>
+            <h2 style="color: #1e3a8a; margin-bottom: 4px;"><i class="fa-solid fa-brain"></i> NeuroScan AI Diagnostic Report</h2>
+            <p style="font-size: 12px; color: #64748b;">Clinical Decision Support & Explainability System</p>
+          </div>
+          <div style="text-align: right;">
+            <p style="font-size: 12px; font-weight: 700;" id="modal-scan-id">SCAN-ID: --</p>
+            <p style="font-size: 11px; color: #64748b;" id="modal-exam-date">Date: --</p>
+          </div>
+        </div>
+
+        <!-- Patient Demographics -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; background: #f8fafc; padding: 12px; border-radius: 6px; margin-bottom: 16px; font-size: 12px;">
+          <div><strong>Patient Name:</strong> <span id="modal-p-name">--</span></div>
+          <div><strong>Patient ID:</strong> <span id="modal-p-id">--</span></div>
+          <div><strong>Age / Sex:</strong> <span id="modal-p-demo">--</span></div>
+        </div>
+
+        <!-- Findings Banner -->
+        <div style="border: 2px solid #1e40af; border-radius: 6px; padding: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <span style="font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 700;">Deep Learning AI Assessment</span>
+            <h3 id="modal-diagnosis-title" style="color: #1e40af; font-size: 16px; margin-top: 2px;">--</h3>
+          </div>
+          <div style="text-align: right;">
+            <span style="font-size: 18px; font-weight: 800;" id="modal-confidence">--%</span>
+            <span style="display: block; font-size: 10px; color: #64748b;">CONFIDENCE</span>
+          </div>
+        </div>
+
+        <!-- Imagery Comparison -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+          <div style="text-align: center; background: #000; border-radius: 6px; overflow: hidden; height: 220px; display: flex; align-items: center; justify-content: center;">
+            <img id="modal-orig-img" src="" alt="Native Scan" style="max-height: 100%; max-width: 100%;">
+          </div>
+          <div style="text-align: center; background: #000; border-radius: 6px; overflow: hidden; height: 220px; display: flex; align-items: center; justify-content: center;">
+            <img id="modal-overlay-img" src="" alt="Grad-CAM Overlay" style="max-height: 100%; max-width: 100%;">
+          </div>
+        </div>
+
+        <!-- Probabilities -->
+        <div style="font-size: 12px; margin-bottom: 16px;">
+          <strong>Class Probabilities:</strong>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 6px;" id="modal-prob-list">
+            <!-- Filled dynamically -->
+          </div>
+        </div>
+
+        <!-- Clinical Context -->
+        <div style="font-size: 12px; line-height: 1.5; color: #334155; margin-bottom: 16px;" id="modal-clinical-text">
+          <!-- Filled dynamically -->
+        </div>
+
+        <!-- Disclaimer -->
+        <p style="font-size: 10px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 8px; line-height: 1.4;">
+          <strong>Clinical Disclaimer:</strong> This report is generated by a computer vision deep learning model (EfficientNet-B0) as an investigational decision-support tool. It does not replace comprehensive radiologic review by a certified physician.
+        </p>
+
+        <!-- Signature block -->
+        <div style="display: flex; justify-content: space-between; margin-top: 24px; font-size: 11px; color: #475569;">
+          <div>Examining Physician: _______________________</div>
+          <div>Reviewing Radiologist: _______________________</div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btn-modal-close" class="btn-secondary">Close</button>
+        <button id="btn-modal-print" class="btn-primary"><i class="fa-solid fa-print"></i> Print / Save PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <span>NeuroScan AI &bull; Brain MRI Tumor Classifier &copy; 2026 | DrEnosh</span>
+    <span>
+      <a href="https://github.com/DrEnosh/brain-tumor-analyzer" target="_blank">
+        <i class="fa-brands fa-github"></i> GitHub: DrEnosh/brain-tumor-analyzer
+      </a>
+    </span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
