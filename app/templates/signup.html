@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Sign up · Brain MRI Tumor Analyzer{% endblock %}
+{% block content %}
+<section class="card narrow">
+  <h1>Create an account</h1>
+  {% include "_errors.html" %}
+  <form method="post" action="/signup" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>Full name <input name="full_name" value="{{ form.full_name or '' }}" maxlength="120" required autocomplete="name"></label>
+    <label>Email <input type="email" name="email" value="{{ form.email or '' }}" maxlength="254" required autocomplete="email"></label>
+    <label>Password <input type="password" name="password" minlength="8" maxlength="128" required autocomplete="new-password"></label>
+    <label>Confirm password <input type="password" name="confirm_password" minlength="8" maxlength="128" required autocomplete="new-password"></label>
+    <button type="submit" class="btn">Sign up</button>
+  </form>
+  <p class="muted">Already registered? <a href="/login">Log in</a></p>
+</section>
+{% endblock %}

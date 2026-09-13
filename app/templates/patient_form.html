@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Register patient · Brain MRI Tumor Analyzer{% endblock %}
+{% block content %}
+<section class="card narrow">
+  <h1>Register a patient</h1>
+  {% include "_errors.html" %}
+  <form method="post" action="/patients" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>Full name <input name="full_name" value="{{ form.full_name or '' }}" maxlength="120" required></label>
+    <div class="form-row">
+      <label>Age <input type="number" name="age" value="{{ form.age or '' }}" min="0" max="120" step="1" required></label>
+      <label>Sex
+        <select name="sex" required>
+          <option value="" {% if not form.sex %}selected{% endif %} disabled>Select</option>
+          {% for s in sexes %}<option value="{{ s }}" {% if form.sex == s %}selected{% endif %}>{{ s }}</option>{% endfor %}
+        </select>
+      </label>
+    </div>
+    <label>Contact (optional) <input name="contact" value="{{ form.contact or '' }}" maxlength="120" placeholder="Phone or email"></label>
+    <label>Clinical notes (optional) <textarea name="notes" rows="4" maxlength="2000">{{ form.notes or '' }}</textarea></label>
+    <div class="actions">
+      <button type="submit" class="btn">Register patient</button>
+      <a class="btn btn-secondary" href="/dashboard">Cancel</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

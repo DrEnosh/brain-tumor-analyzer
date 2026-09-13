@@ -1,0 +1,21 @@
+{"arch": "resnet50", "epoch": 1, "train_loss": 0.6501642700766219, "val_loss": 0.4862407445907593, "val_accuracy": 0.9435643564356435, "val_macro_f1": 0.943340646030695, "train_seconds": 101.4, "val_seconds": 83.1}
+{"arch": "resnet50", "epoch": 2, "train_loss": 0.4444341681846956, "val_loss": 0.4318837821483612, "val_accuracy": 0.9653465346534653, "val_macro_f1": 0.9648028070994605, "train_seconds": 34.6, "val_seconds": 1.8}
+{"arch": "resnet50", "epoch": 3, "train_loss": 0.4142239872290164, "val_loss": 0.397847056388855, "val_accuracy": 0.9821782178217822, "val_macro_f1": 0.9818262800307379, "train_seconds": 23.9, "val_seconds": 1.9}
+{"arch": "resnet50", "epoch": 4, "train_loss": 0.3908660034744107, "val_loss": 0.3825995624065399, "val_accuracy": 0.9871287128712871, "val_macro_f1": 0.9869614109884579, "train_seconds": 19.1, "val_seconds": 1.8}
+{"arch": "resnet50", "epoch": 5, "train_loss": 0.38549125295918, "val_loss": 0.3848811388015747, "val_accuracy": 0.9851485148514851, "val_macro_f1": 0.9848889421815896, "train_seconds": 28.3, "val_seconds": 4.6}
+{"arch": "resnet50", "epoch": 6, "train_loss": 0.3782514714870323, "val_loss": 0.3768180012702942, "val_accuracy": 0.9891089108910891, "val_macro_f1": 0.9890277680007815, "train_seconds": 23.5, "val_seconds": 3.4}
+{"arch": "resnet50", "epoch": 7, "train_loss": 0.36993497914197493, "val_loss": 0.3747549057006836, "val_accuracy": 0.9871287128712871, "val_macro_f1": 0.9869449769967011, "train_seconds": 22.1, "val_seconds": 1.8}
+{"arch": "resnet50", "epoch": 8, "train_loss": 0.3656774114589302, "val_loss": 0.38924163579940796, "val_accuracy": 0.9861386138613861, "val_macro_f1": 0.9860063890373486, "train_seconds": 18.8, "val_seconds": 1.7}
+{"arch": "resnet50", "epoch": 9, "train_loss": 0.36356585771859096, "val_loss": 0.37952831387519836, "val_accuracy": 0.9871287128712871, "val_macro_f1": 0.9871033593369999, "train_seconds": 18.9, "val_seconds": 1.7}
+{"arch": "resnet50", "epoch": 10, "train_loss": 0.36438510592291956, "val_loss": 0.3737943768501282, "val_accuracy": 0.9910891089108911, "val_macro_f1": 0.9910270192157236, "train_seconds": 18.9, "val_seconds": 1.7}
+{"arch": "resnet50", "epoch": 11, "train_loss": 0.3594582046375794, "val_loss": 0.369861900806427, "val_accuracy": 0.9920792079207921, "val_macro_f1": 0.9920174131317152, "train_seconds": 18.9, "val_seconds": 1.7}
+{"arch": "resnet50", "epoch": 12, "train_loss": 0.3595245616371129, "val_loss": 0.3637057840824127, "val_accuracy": 0.9920792079207921, "val_macro_f1": 0.9920061323702165, "train_seconds": 19.2, "val_seconds": 1.6}
+{"arch": "resnet50", "epoch": 13, "train_loss": 0.3560543836785012, "val_loss": 0.3664534091949463, "val_accuracy": 0.9910891089108911, "val_macro_f1": 0.9909893188578047, "train_seconds": 18.7, "val_seconds": 1.7}
+{"arch": "resnet50", "epoch": 14, "train_loss": 0.3573744372040236, "val_loss": 0.363876610994339, "val_accuracy": 0.9930693069306931, "val_macro_f1": 0.9930398359222234, "train_seconds": 19.0, "val_seconds": 1.7}
+{"arch": "resnet50", "epoch": 15, "train_loss": 0.3562008028938657, "val_loss": 0.3651188015937805, "val_accuracy": 0.9930693069306931, "val_macro_f1": 0.9930398359222234, "train_seconds": 19.1, "val_seconds": 1.6}
+{"arch": "resnet50", "epoch": 16, "train_loss": 0.3535424600653097, "val_loss": 0.3646529018878937, "val_accuracy": 0.9920792079207921, "val_macro_f1": 0.992021323531701, "train_seconds": 18.9, "val_seconds": 1.7}
+{"arch": "resnet50", "epoch": 17, "train_loss": 0.3542201131784997, "val_loss": 0.3662704527378082, "val_accuracy": 0.9920792079207921, "val_macro_f1": 0.9919747713782048, "train_seconds": 19.0, "val_seconds": 1.7}
+{"arch": "resnet50", "epoch": 18, "train_loss": 0.3540523832752591, "val_loss": 0.3652336001396179, "val_accuracy": 0.9920792079207921, "val_macro_f1": 0.9920004081291813, "train_seconds": 18.9, "val_seconds": 1.8}
+{"arch": "resnet50", "epoch": 19, "train_loss": 0.354835788814389, "val_loss": 0.36380645632743835, "val_accuracy": 0.9920792079207921, "val_macro_f1": 0.9920004081291813, "train_seconds": 18.8, "val_seconds": 1.7}
+early stopping at epoch 19 (best epoch 14)
+{'arch': 'resnet50', 'best_epoch': 14, 'best_val_macro_f1': 0.9930398359222234, 'epochs_run': 19, 'hyperparameters': {'epochs': 20, 'lr': 0.001, 'patience': 5, 'batch_size': 32, 'weight_decay': 0.0001, 'seed': 42, 'label_smoothing': 0.1}}

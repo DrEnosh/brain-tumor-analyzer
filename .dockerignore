@@ -1,0 +1,10 @@
+*
+!requirements-app.txt
+!app/
+!ml/__init__.py
+!ml/config.py
+!ml/preprocessing.py
+!ml/explain.py
+!artifacts/model.onnx
+!artifacts/model_meta.json
+**/__pycache__

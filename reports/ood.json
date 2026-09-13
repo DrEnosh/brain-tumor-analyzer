@@ -1,0 +1,39 @@
+{
+  "model_version": "efficientnet_b0-epoch11-fb5bda6b",
+  "method": "Mahalanobis distance of penultimate features to the nearest class mean (Ledoit-Wolf covariance)",
+  "threshold": 5744.1611328125,
+  "threshold_rule": "99th percentile of validation-set scores",
+  "val_flag_rate": 0.01089108910891089,
+  "test_flag_rate": 0.010901883052527254,
+  "test_images": 1009,
+  "test_flagged_images": 11,
+  "test_accuracy_flagged": 0.8181818181818182,
+  "test_accuracy_not_flagged": 0.9849699398797596,
+  "synthetic_detection": {
+    "Cartoon head phantoms": {
+      "n": 40,
+      "detected": 0.875,
+      "median_model_confidence": 0.8331688642501831
+    },
+    "Random noise": {
+      "n": 20,
+      "detected": 1.0,
+      "median_model_confidence": 0.8829370737075806
+    },
+    "Gradients": {
+      "n": 10,
+      "detected": 1.0,
+      "median_model_confidence": 0.7582324743270874
+    },
+    "Portrait photo (and crops)": {
+      "n": 15,
+      "detected": 1.0,
+      "median_model_confidence": 0.7461186647415161
+    },
+    "Text documents": {
+      "n": 10,
+      "detected": 1.0,
+      "median_model_confidence": 0.8698287010192871
+    }
+  }
+}

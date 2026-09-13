@@ -1,0 +1,5 @@
+{
+  "arch": "efficientnet_b0",
+  "val_macro_f1": 0.9930433770692337,
+  "rule": "highest validation macro-F1; within 0.002 counts as a tie, won by fewer parameters"
+}

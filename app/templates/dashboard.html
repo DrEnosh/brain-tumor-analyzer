@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Patients · Brain MRI Tumor Analyzer{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Patients</h1>
+    <p class="muted">{{ patients|length }} patient{{ '' if patients|length == 1 else 's' }} · {{ scan_count }} analysed scan{{ '' if scan_count == 1 else 's' }}</p>
+  </div>
+  <a class="btn" href="/patients/new">Register patient</a>
+</div>
+
+{% if not patients %}
+<section class="card empty">
+  <h2>No patients yet</h2>
+  <p>Register a patient to upload their first MRI scan.</p>
+  <a class="btn" href="/patients/new">Register patient</a>
+</section>
+{% else %}
+<section class="card">
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ID</th><th>Name</th><th>Age</th><th>Sex</th><th>Scans</th><th>Latest result</th></tr></thead>
+      <tbody>
+      {% for p in patients %}
+        <tr>
+          <td><a href="/patients/{{ p.id }}">{{ p.code }}</a></td>
+          <td><a href="/patients/{{ p.id }}">{{ p.full_name }}</a></td>
+          <td>{{ p.age }}</td>
+          <td>{{ p.sex }}</td>
+          <td>{{ p.scans|length }}</td>
+          <td>
+            {% if p.scans %}
+              {% set s = p.scans[0] %}
+              <a href="/scans/{{ s.id }}"><span class="tag tag-{{ s.predicted_label }}">{{ class_names[s.predicted_label] }}</span></a>
+            {% else %}<span class="muted">No scans</span>{% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+{% if recent %}
+<section class="card">
+  <h2>Recent analyses</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Date (UTC)</th><th>Patient</th><th>Result</th><th>Confidence</th><th></th></tr></thead>
+      <tbody>
+      {% for s in recent %}
+        <tr>
+          <td>{{ s.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td>{{ s.patient.full_name }} <span class="muted">{{ s.patient.code }}</span></td>
+          <td><span class="tag tag-{{ s.predicted_label }}">{{ class_names[s.predicted_label] }}</span>{% if s.atypical_input %} <span class="tag tag-warning">Unusual input</span>{% endif %}</td>
+          <td>{{ '%.1f'|format(s.confidence * 100) }}%</td>
+          <td><a href="/scans/{{ s.id }}">View report</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div>
+    <h1>Brain tumor classification from MRI, with an explanation</h1>
+    <p class="lead">Register a patient, upload a brain MRI slice, and get a report: whether the scan shows a glioma,
+      meningioma, pituitary tumor or no tumor, the model's confidence, and a Grad-CAM heat-map showing which part of
+      the image drove the decision.</p>
+    <div class="actions">
+      <a class="btn" href="/signup">Create an account</a>
+      <a class="btn btn-secondary" href="/login">Log in</a>
+    </div>
+  </div>
+  <ol class="steps">
+    <li><strong>Register a patient</strong><span>Name, age and sex. Each patient gets a record ID.</span></li>
+    <li><strong>Upload an MRI slice</strong><span>JPEG or PNG export of a brain MRI.</span></li>
+    <li><strong>Read the report</strong><span>Tumor class, probabilities, heat-map and what the finding means.</span></li>
+  </ol>
+</section>
+{% endblock %}

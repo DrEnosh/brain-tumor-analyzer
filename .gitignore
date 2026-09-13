@@ -1,0 +1,9 @@
+__pycache__/
+.pytest_cache/
+# Uploaded patient scans and the app database
+app_data/
+# Raw dataset (download from Kaggle, see README)
+Training/
+Testing/
+# Large training checkpoints; the deployable model is artifacts/model.onnx
+artifacts/models/*/best.pt

@@ -1,0 +1,49 @@
+{
+  "seed": 42,
+  "raw_images": 7023,
+  "exact_duplicate_copies_removed": 297,
+  "exact_duplicate_groups_crossing_original_training_testing": 79,
+  "unique_images": 6726,
+  "near_duplicate_threshold_bits_of_256": 20,
+  "near_duplicate_pairs": 5374,
+  "groups": 5094,
+  "groups_with_multiple_images": 579,
+  "images_in_multi_image_groups": 2211,
+  "largest_group": 44,
+  "near_duplicate_groups_crossing_original_training_testing": 327,
+  "splits": {
+    "train": {
+      "images": 4707,
+      "fraction": 0.6998,
+      "groups": 3571,
+      "per_class": {
+        "glioma": 1134,
+        "meningioma": 1144,
+        "notumor": 1211,
+        "pituitary": 1218
+      }
+    },
+    "val": {
+      "images": 1010,
+      "fraction": 0.1502,
+      "groups": 762,
+      "per_class": {
+        "glioma": 243,
+        "meningioma": 246,
+        "notumor": 260,
+        "pituitary": 261
+      }
+    },
+    "test": {
+      "images": 1009,
+      "fraction": 0.15,
+      "groups": 761,
+      "per_class": {
+        "glioma": 243,
+        "meningioma": 245,
+        "notumor": 260,
+        "pituitary": 261
+      }
+    }
+  }
+}

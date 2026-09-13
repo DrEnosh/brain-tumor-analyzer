@@ -1,0 +1,31 @@
+{
+  "arch": "efficientnet_b0",
+  "version": "efficientnet_b0-epoch11-fb5bda6b",
+  "classes": [
+    "glioma",
+    "meningioma",
+    "notumor",
+    "pituitary"
+  ],
+  "display_names": {
+    "glioma": "Glioma",
+    "meningioma": "Meningioma",
+    "notumor": "No tumor",
+    "pituitary": "Pituitary tumor"
+  },
+  "img_size": 224,
+  "mean": [
+    0.48500001430511475,
+    0.4560000002384186,
+    0.4059999883174896
+  ],
+  "std": [
+    0.2290000021457672,
+    0.2240000069141388,
+    0.22499999403953552
+  ],
+  "val_macro_f1": 0.9940720983901667,
+  "ood_threshold": 5744.1611328125,
+  "sha256": "fb5bda6b3bb6b9899156f54f31e8b70b6f491a2e2f71a9149f5317881d220381",
+  "exported_at": "2026-09-13T09:04:36+00:00"
+}

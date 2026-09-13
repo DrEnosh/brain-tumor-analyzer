@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Brain MRI Tumor Analyzer{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span>Brain MRI Tumor Analyzer</a>
+    <nav class="nav">
+      {% if signed_in %}
+        <a href="/dashboard">Patients</a>
+        <a href="/patients/new">Register patient</a>
+        <span class="who">{{ user_name }}</span>
+        <form method="post" action="/logout" class="inline">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <button type="submit" class="linklike">Log out</button>
+        </form>
+      {% else %}
+        <a href="/login">Log in</a>
+        <a class="btn btn-small" href="/signup">Sign up</a>
+      {% endif %}
+    </nav>
+  </header>
+  <main class="container">
+    {% for f in flashes %}
+      <div class="flash flash-{{ f.kind }}" role="{{ 'alert' if f.kind == 'error' else 'status' }}">{{ f.text }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">
+    <p>{{ disclaimer }}</p>
+  </footer>
+</body>
+</html>

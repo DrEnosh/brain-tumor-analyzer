@@ -1,0 +1,23 @@
+{
+  "base_url": "http://127.0.0.1:8000",
+  "environment": "local laptop (Intel i7-13650HX), CPU inference with onnxruntime",
+  "requests": 40,
+  "upload_to_report_ms": {
+    "mean": 297.3233050013732,
+    "median": 300.6561000001966,
+    "p95": 352.86422000317543,
+    "n": 40
+  },
+  "api_predict_ms": {
+    "mean": 153.00070500052243,
+    "median": 150.96460000131628,
+    "p95": 186.64961499634956,
+    "n": 40
+  },
+  "server_inference_ms": {
+    "mean": 96.08,
+    "median": 92.55,
+    "p95": 127.02499999999998,
+    "n": 40
+  }
+}

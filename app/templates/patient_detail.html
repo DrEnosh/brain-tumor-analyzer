@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}{{ patient.full_name }} · Brain MRI Tumor Analyzer{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <p class="muted"><a href="/dashboard">Patients</a> / {{ patient.code }}</p>
+    <h1>{{ patient.full_name }}</h1>
+  </div>
+</div>
+
+<div class="grid-2">
+  <section class="card">
+    <h2>Patient details</h2>
+    <dl class="details">
+      <dt>Patient ID</dt><dd>{{ patient.code }}</dd>
+      <dt>Age</dt><dd>{{ patient.age }}</dd>
+      <dt>Sex</dt><dd>{{ patient.sex }}</dd>
+      <dt>Contact</dt><dd>{{ patient.contact or '—' }}</dd>
+      <dt>Registered</dt><dd>{{ patient.created_at.strftime('%Y-%m-%d') }}</dd>
+    </dl>
+    {% if patient.notes %}<h3>Notes</h3><p class="notes">{{ patient.notes }}</p>{% endif %}
+  </section>
+
+  <section class="card">
+    <h2>Analyse a new MRI scan</h2>
+    {% if model_ready %}
+    <form method="post" action="/patients/{{ patient.id }}/scans" enctype="multipart/form-data" class="form" id="upload-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <label>Brain MRI slice (JPEG or PNG, up to 10 MB)
+        <input type="file" name="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required>
+      </label>
+      <button type="submit" class="btn" id="upload-button">Upload and analyse</button>
+    </form>
+    <p class="muted small">The image is classified as glioma, meningioma, pituitary tumor or no tumor, and a Grad-CAM heat-map is generated.</p>
+    <script>
+      document.getElementById("upload-form").addEventListener("submit", function () {
+        var b = document.getElementById("upload-button");
+        b.disabled = true;
+        b.textContent = "Analysing…";
+      });
+    </script>
+    {% else %}
+    <p class="flash flash-error">The model is not available on this server, so scans cannot be analysed.</p>
+    {% endif %}
+  </section>
+</div>
+
+<section class="card">
+  <h2>Scan history</h2>
+  {% if patient.scans %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Date (UTC)</th><th>File</th><th>Result</th><th>Confidence</th><th></th></tr></thead>
+      <tbody>
+      {% for s in patient.scans %}
+        <tr>
+          <td>{{ s.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td class="filename">{{ s.original_filename }}</td>
+          <td><span class="tag tag-{{ s.predicted_label }}">{{ class_names[s.predicted_label] }}</span>{% if s.atypical_input %} <span class="tag tag-warning">Unusual input</span>{% endif %}</td>
+          <td>{{ '%.1f'|format(s.confidence * 100) }}%</td>
+          <td><a href="/scans/{{ s.id }}">View report</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">No scans analysed for this patient yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

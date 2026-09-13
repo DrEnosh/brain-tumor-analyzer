@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Report {{ patient.code }}-{{ scan.id }} · Brain MRI Tumor Analyzer{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <p class="muted no-print"><a href="/dashboard">Patients</a> / <a href="/patients/{{ patient.id }}">{{ patient.code }}</a> / Scan {{ scan.id }}</p>
+    <h1>MRI analysis report</h1>
+    <p class="muted">{{ patient.full_name }} · {{ patient.code }} · {{ patient.age }} y · {{ patient.sex }} · {{ scan.created_at.strftime('%Y-%m-%d %H:%M') }} UTC</p>
+  </div>
+  <button type="button" class="btn btn-secondary no-print" onclick="window.print()">Print report</button>
+</div>
+
+{% if scan.atypical_input %}
+<div class="flash flash-error" role="alert"><strong>Unusual input.</strong> This image is unlike the brain MRI slices the model was trained on. It may not be a brain MRI at all (for example a photo or a document), or it may be a low-quality or differently acquired scan. The model always picks one of its four classes, and it is much less accurate on images like this, so treat the result with extra caution.</div>
+{% endif %}
+{% if scan.colour_warning %}
+<div class="flash flash-error" role="alert">This image contains colour, which MRI scans normally do not. Check that the correct file was uploaded; the result may not be meaningful.</div>
+{% endif %}
+
+<div class="grid-2">
+  <section class="card">
+    <h2>Result</h2>
+    <p class="result-label tag-{{ scan.predicted_label }}-text">{{ class_names[scan.predicted_label] }}</p>
+    <p class="result-confidence">Model confidence: <strong>{{ '%.1f'|format(scan.confidence * 100) }}%</strong>
+      {% if low_confidence %}<span class="tag tag-warning">Low confidence</span>{% endif %}
+      {% if scan.atypical_input %}<span class="tag tag-warning">Unusual input</span>{% endif %}</p>
+    <div class="bars">
+      {% for label, p in probabilities %}
+      <div class="bar-row">
+        <span class="bar-name">{{ class_names[label] }}</span>
+        <span class="bar-track"><span class="bar-fill tag-{{ label }}" style="width: {{ '%.1f'|format(p * 100) }}%"></span></span>
+        <span class="bar-value">{{ '%.1f'|format(p * 100) }}%</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% if low_confidence %}<p class="muted small">The model is not confident about this scan. Treat the result with extra caution.</p>{% endif %}
+  </section>
+
+  <section class="card">
+    <h2>What this finding means</h2>
+    <dl class="details">
+      <dt>Body part</dt><dd>{{ body_part }}</dd>
+      <dt>Imaging</dt><dd>{{ imaging }}</dd>
+      <dt>Origin</dt><dd>{{ info.origin }}</dd>
+    </dl>
+    <p>{{ info.description }}</p>
+  </section>
+</div>
+
+<section class="card">
+  <h2>Where the model looked (Grad-CAM)</h2>
+  <div class="scan-images">
+    <figure>
+      <img src="/scans/{{ scan.id }}/image" alt="Uploaded MRI slice" width="448" height="448">
+      <figcaption>Uploaded MRI slice</figcaption>
+    </figure>
+    <figure>
+      <img src="/scans/{{ scan.id }}/heatmap" alt="Grad-CAM heat-map over the MRI slice" width="448" height="448">
+      <figcaption>Grad-CAM heat-map for “{{ class_names[scan.predicted_label] }}”</figcaption>
+    </figure>
+  </div>
+  <div class="legend"><span>Low</span><span class="legend-bar"></span><span>High attention</span></div>
+  <p>{{ attention.text }}</p>
+  <p class="muted small">Warm colours mark the image regions that contributed most to the predicted class. The heat-map shows what the model relied on; it is not a tumor outline. Image orientation is not standardised across scanners, so “left” and “right” refer to the image, not to the patient.
+    {% if scan.predicted_label == 'notumor' %} For a “no tumor” result, highlighted areas are the regions that supported that decision, not lesions.{% endif %}</p>
+</section>
+
+<section class="card">
+  <h2>Technical details</h2>
+  <dl class="details">
+    <dt>Uploaded file</dt><dd class="filename">{{ scan.original_filename }}</dd>
+    <dt>Model</dt><dd>{{ scan.model_version }}</dd>
+    <dt>Processing time</dt><dd>{{ '%.0f'|format(scan.inference_ms) }} ms</dd>
+  </dl>
+</section>
+{% endblock %}

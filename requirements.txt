@@ -1,0 +1,12 @@
+# Training, evaluation and tests. Install PyTorch first, matching your GPU:
+#   pip install torch==2.11.0 torchvision==0.26.0 --index-url https://download.pytorch.org/whl/cu128
+-r requirements-app.txt
+torch==2.11.0
+torchvision==0.26.0
+pandas==2.3.3
+scikit-learn==1.7.2
+matplotlib==3.10.7
+onnx==1.22.0
+onnxscript==0.7.2
+httpx==0.28.1
+pytest==9.0.2
